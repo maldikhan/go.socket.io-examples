@@ -3,7 +3,7 @@ module github.com/maldikhan/go.socket.io/examples
 go 1.18
 
 require (
-	github.com/maldikhan/go.socket.io v0.0.4
+	github.com/maldikhan/go.socket.io v0.1.1
 	github.com/maldikhan/go.socket.io-parser.jsoniter v0.1.0
 	go.uber.org/zap v1.23.0 // Last go 1.18 suporting version
 )

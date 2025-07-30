@@ -25,7 +25,7 @@ func main() {
 	signal.Notify(onExit)
 	ctx, contextClose := context.WithCancel(context.Background())
 	defer contextClose()
-	ctx, cancel := context.WithTimeout(ctx, 1500*time.Second)
+	ctx, cancel := context.WithTimeout(ctx, 3000*time.Second)
 	defer cancel()
 
 	type Result struct {
@@ -46,7 +46,7 @@ func main() {
 	}
 
 	eioClient, err := engineio_v4_client.NewClient(
-		engineio_v4_client.WithRawURL("http://127.0.0.1:3001/socket.io/"),
+		engineio_v4_client.WithRawURL("http://127.0.0.1:3005/socket.io/"),
 		engineio_v4_client.WithTransport(wsTransport),
 		engineio_v4_client.WithLogger(logger.Named("engine.io")),
 		engineio_v4_client.WithSupportedTransports([]engineio_v4_client.Transport{wsTransport}),
@@ -84,6 +84,12 @@ func main() {
 	*/
 
 	client.SetHandshakeData(map[string]interface{}{"userName": "Varvar"})
+
+
+	client.OnAny(func(eventName string, params []interface{}) {
+		fmt.Println("Catched wildcard event:", eventName)
+	})
+
 
 	client.On("connect", func() {
 		fmt.Println("Connected")
