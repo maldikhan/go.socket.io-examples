@@ -37,6 +37,13 @@ func main() {
 
 	logger := zap.NewExample().Sugar()
 
+	// Get server URL from environment or use default
+	serverURL := os.Getenv("SOCKETIO_SERVER_URL")
+	if serverURL == "" {
+		serverURL = "http://127.0.0.1:3300/socket.io/"
+	}
+	logger.Infof("Connecting to Socket.IO server at: %s", serverURL)
+
 	// Custom client init for demo
 	wsTransport, err := engineio_v4_client_transport_ws.NewTransport(
 		engineio_v4_client_transport_ws.WithLogger(logger.Named("engine.io:transport:ws")),
@@ -46,7 +53,7 @@ func main() {
 	}
 
 	eioClient, err := engineio_v4_client.NewClient(
-		engineio_v4_client.WithRawURL("http://127.0.0.1:3005/socket.io/"),
+		engineio_v4_client.WithRawURL(serverURL),
 		engineio_v4_client.WithTransport(wsTransport),
 		engineio_v4_client.WithLogger(logger.Named("engine.io")),
 		engineio_v4_client.WithSupportedTransports([]engineio_v4_client.Transport{wsTransport}),
@@ -71,7 +78,7 @@ func main() {
 
 	// Or just default client
 	/*
-		url, err := url.Parse("http://127.0.0.1:3001")
+		url, err := url.Parse("http://127.0.0.1:3300")
 		if err != nil {
 			panic(err)
 		}
